@@ -2,126 +2,33 @@
 
 OS=${PDFium_TARGET_OS:?}
 CPU="${PDFium_TARGET_CPU:?}"
-TARGET_ENVIRONMENT="${PDFium_TARGET_ENVIRONMENT:-}"
 SOURCE_DIR="$PWD/example"
 CMAKE_ARGS=()
 CAN_RUN_ON_HOST=false
 EXAMPLE="./example"
-SKIP_TESTS=false
 
 export PDFium_DIR="$PWD/staging"
 
 case "$OS" in
-  android)
-    # Android static builds need an NDK toolchain file for CMake to link
-    # the example against the right sysroot/libc; skip the example test
-    # rather than drag in NDK plumbing here. The PDFium build itself has
-    # already been verified by this step — only the example link is skipped.
-    if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ]; then
-      SKIP_TESTS=true
-    fi
-    case "$CPU" in
-      arm)
-        PREFIX="armv7a-linux-androideabi19-"
-        ;;
-      arm64)
-        PREFIX="aarch64-linux-android21-"
-        ;;
-      x64)
-        PREFIX="x86_64-linux-android21-"
-        ;;
-      x86)
-        PREFIX="i686-linux-android19-"
-        ;;
-    esac
-    CMAKE_ARGS+=(
-      -D CMAKE_C_COMPILER="${PREFIX:-}clang"
-      -D CMAKE_CXX_COMPILER="${PREFIX:-}clang++"
-    )
-    ;;
-
-  ios)
-    case "$CPU" in
-      arm64)
-        ARCH="arm64"
-        ;;
-      x64)
-        ARCH="x86_64"
-        ;;
-    esac
-    case "$TARGET_ENVIRONMENT" in
-      catalyst)
-        SDK="macosx"
-        EXAMPLE="example.app/Contents/MacOS/example"
-        ;;
-      device)
-        SDK="iphoneos"
-        EXAMPLE="example.app/example"
-        ;;
-      simulator)
-        SDK="iphonesimulator"
-        EXAMPLE="example.app/example"
-        ;;
-    esac
-    CMAKE_ARGS+=(
-      -D CMAKE_SYSTEM_NAME="iOS"
-      -D CMAKE_OSX_SYSROOT="$SDK"
-      -D CMAKE_OSX_ARCHITECTURES="$ARCH"
-      -D CMAKE_OSX_DEPLOYMENT_TARGET="14.0"
-      # https://discourse.cmake.org/t/find-package-stops-working-when-cmake-system-name-ios/4609/7
-      -D CMAKE_FIND_ROOT_PATH_MODE_PACKAGE="BOTH"
-      -D CMAKE_FIND_ROOT_PATH_MODE_INCLUDE="BOTH"
-      -D CMAKE_FIND_ROOT_PATH_MODE_LIBRARY="BOTH"
-    )
-    ;;
-
   linux)
     case "$CPU" in
-      arm)
-        if [ "$TARGET_ENVIRONMENT" == "musl" ]; then
-          PREFIX="arm-linux-musleabihf-"
-        else
-          PREFIX="arm-linux-gnueabihf-"
-          SUFFIX="-10"
-        fi
-        ;;
       arm64)
-        if [ "$TARGET_ENVIRONMENT" == "musl" ]; then
-          PREFIX="aarch64-linux-musl-"
+        if [ "$(uname -m)" == "aarch64" ]; then
+          CAN_RUN_ON_HOST=true
         else
           PREFIX="aarch64-linux-gnu-"
           SUFFIX="-10"
         fi
         ;;
-      ppc64)
-        PREFIX="powerpc64le-linux-gnu-"
-        ;;
-      x86)
-        if [ "$TARGET_ENVIRONMENT" == "musl" ]; then
-          PREFIX="i686-linux-musl-"
-        else
-          CAN_RUN_ON_HOST=true
-        fi
-        CMAKE_ARGS+=(
-          -D CMAKE_CXX_FLAGS="-m32"
-          -D CMAKE_C_FLAGS="-m32"
-        )
-        ;;
       x64)
-        if [ "$TARGET_ENVIRONMENT" == "musl" ]; then
-          PREFIX="x86_64-linux-musl-"
-        else
-          CAN_RUN_ON_HOST=true
-        fi
+        CAN_RUN_ON_HOST=true
         ;;
     esac
     # For static glibc builds, compile the example with PDFium's shipped
     # clang+lld. The static archive is built against the Debian bullseye
     # sysroot's libstdc++; mixing it with the host gcc's noble libstdc++
     # yields ABI-level template instantiations that crash at runtime.
-    # Cross-compile targets keep their own gcc but still link with lld,
-    # since GNU ld cannot parse pdfium's clang-emitted .eh_frame sections.
-    if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ] && [ -z "${PREFIX:-}" ]; then
+    if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ] && [ -z "${PREFIX:-}" ]; then
       PDFIUM_CLANG_DIR="$PWD/pdfium/third_party/llvm-build/Release+Asserts/bin"
       CMAKE_ARGS+=(
         -D CMAKE_C_COMPILER="$PDFIUM_CLANG_DIR/clang"
@@ -133,9 +40,6 @@ case "$OS" in
         -D CMAKE_C_COMPILER="${PREFIX:-}gcc${SUFFIX:-}"
         -D CMAKE_CXX_COMPILER="${PREFIX:-}g++${SUFFIX:-}"
       )
-      if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ]; then
-        CMAKE_ARGS+=( -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" )
-      fi
     fi
     ;;
 
@@ -159,10 +63,6 @@ case "$OS" in
       arm64)
         ARCH="ARM64"
         ;;
-      x86)
-        ARCH="Win32"
-        CAN_RUN_ON_HOST=true
-        ;;
       x64)
         ARCH="x64"
         CAN_RUN_ON_HOST=true
@@ -174,28 +74,21 @@ case "$OS" in
     )
     EXAMPLE="Debug/example.exe"
     ;;
-
-  emscripten)
-    # TODO: add test for Wasm
-    SKIP_TESTS=true
-    ;;
 esac
 
 CMAKE_ARGS+=("$SOURCE_DIR")
 
-if [ $SKIP_TESTS == "false" ]; then
-  mkdir -p build
-  pushd build
-  rm -rf *
+mkdir -p build
+pushd build
+rm -rf *
 
-  cmake "${CMAKE_ARGS[@]}"
-  cmake --build .
+cmake "${CMAKE_ARGS[@]}"
+cmake --build .
 
-  file $EXAMPLE
+file $EXAMPLE
 
-  if [ $CAN_RUN_ON_HOST == "true" ]; then
-    $EXAMPLE "${PDFium_SOURCE_DIR}/testing/resources/hello_world.pdf" hello_world.ppm
-  fi
+if [ $CAN_RUN_ON_HOST == "true" ]; then
+  $EXAMPLE "${PDFium_SOURCE_DIR}/testing/resources/hello_world.pdf" hello_world.ppm
+fi
 
-  popd
-fi;
+popd

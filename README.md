@@ -5,7 +5,7 @@
 
 This project hosts pre-compiled **static** binaries of the [PDFium library](https://pdfium.googlesource.com/pdfium/), an open-source library for PDF manipulation and rendering.
 
-It is a fork of [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries/), specialized to produce static archives (`.a` on Linux/macOS/iOS/Android, `.lib` on Windows) so that PDFium can be linked directly into an application without shipping a separate shared library.
+It is a fork of [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries/), specialized to produce static archives (`.a` on Linux/macOS, `.lib` on Windows) so that PDFium can be linked directly into an application without shipping a separate shared library.
 
 **Disclaimer**: This project isn't affiliated with Google or Foxit.
 
@@ -16,92 +16,22 @@ Here are the download links for latest release:
 <table>
   <tr>
     <th>OS</th>
-    <th>Env</th>
     <th>CPU</th>
     <th>PDFium (static)</th>
   </tr>
 
   <tr>
-    <td rowspan="4" colspan=2>Android</td>
-    <td>arm</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-android-arm-static.tgz">pdfium-android-arm-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td>arm64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-android-arm64-static.tgz">pdfium-android-arm64-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td>x64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-android-x64-static.tgz">pdfium-android-x64-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td>x86</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-android-x86-static.tgz">pdfium-android-x86-static.tgz</a></td>
-  </tr>
-
-  <tr>
-    <td rowspan="5">iOS</td>
-    <td rowspan="2">catalyst</td>
-    <td>arm64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-catalyst-arm64-static.tgz">pdfium-ios-catalyst-arm64-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td>x64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-catalyst-x64-static.tgz">pdfium-ios-catalyst-x64-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td>device</td>
-    <td>arm64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-device-arm64-static.tgz">pdfium-ios-device-arm64-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td rowspan="2">simulator</td>
-    <td>arm64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-simulator-arm64-static.tgz">pdfium-ios-simulator-arm64-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td>x64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-simulator-x64-static.tgz">pdfium-ios-simulator-x64-static.tgz</a></td>
-  </tr>
-
-  <tr>
-    <td rowspan="8">Linux</td>
-    <td rowspan="5">glibc</td>
-    <td>arm</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-arm-static.tgz">pdfium-linux-arm-static.tgz</a></td>
-  </tr>
-  <tr>
+    <td rowspan="2">Linux (glibc)</td>
     <td>arm64</td>
     <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-arm64-static.tgz">pdfium-linux-arm64-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td>ppc64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-ppc64-static.tgz">pdfium-linux-ppc64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x64</td>
     <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-x64-static.tgz">pdfium-linux-x64-static.tgz</a></td>
   </tr>
-  <tr>
-    <td>x86</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-x86-static.tgz">pdfium-linux-x86-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td rowspan="3">musl</td>
-    <td>arm64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-musl-arm64-static.tgz">pdfium-linux-musl-arm64-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td>x64</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-musl-x64-static.tgz">pdfium-linux-musl-x64-static.tgz</a></td>
-  </tr>
-  <tr>
-    <td>x86</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-musl-x86-static.tgz">pdfium-linux-musl-x86-static.tgz</a></td>
-  </tr>
 
   <tr>
-    <td rowspan="2" colspan="2">macOS</td>
+    <td rowspan="2">macOS</td>
     <td>arm64</td>
     <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-mac-arm64-static.tgz">pdfium-mac-arm64-static.tgz</a></td>
   </tr>
@@ -111,7 +41,7 @@ Here are the download links for latest release:
   </tr>
 
   <tr>
-    <td rowspan="3" colspan="2">Windows</td>
+    <td rowspan="2">Windows</td>
     <td>arm64</td>
     <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-win-arm64-static.tgz">pdfium-win-arm64-static.tgz</a></td>
   </tr>
@@ -119,15 +49,11 @@ Here are the download links for latest release:
     <td>x64</td>
     <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-win-x64-static.tgz">pdfium-win-x64-static.tgz</a></td>
   </tr>
-  <tr>
-    <td>x86</td>
-    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-win-x86-static.tgz">pdfium-win-x86-static.tgz</a></td>
-  </tr>
 </table>
 
 See the [Releases page](https://github.com/kognitos/pdfium-static/releases) to download older versions of PDFium.
 
-If you need a **shared-library** build (`.so` / `.dll` / `.dylib`), NuGet packages, Conda packages, V8-enabled builds, or WebAssembly, use the upstream project: [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries/).
+If you need a **shared-library** build, 32-bit, musl, iOS, Android, NuGet, Conda, V8-enabled, or WebAssembly builds, use the upstream project: [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries/).
 
 ## Documentation
 
@@ -158,7 +84,7 @@ The `pdfium` CMake target propagates everything consumers need:
 
 ### Using PDFium without CMake
 
-If you can't use `find_package`, on Windows you must define `FPDF_STATIC` for every translation unit that includes PDFium headers (otherwise the compiler will emit `__declspec(dllimport)` on every `FPDF_*` function, leading to unresolved `__imp_*` symbols at link time). On Linux/macOS/iOS/Android, no extra define is needed.
+If you can't use `find_package`, on Windows you must define `FPDF_STATIC` for every translation unit that includes PDFium headers (otherwise the compiler will emit `__declspec(dllimport)` on every `FPDF_*` function, leading to unresolved `__imp_*` symbols at link time). On Linux/macOS, no extra define is needed.
 
 ### Bundled libc++ (Linux glibc tarballs)
 
@@ -174,7 +100,7 @@ This fork tracks [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium
 
 - CI produces static archives instead of shared libraries.
 - Release tarballs are suffixed with `-static`.
-- V8, NuGet, Conda, macOS universal, and WebAssembly targets are not built (use upstream for those).
+- Matrix is limited to **64-bit x64/arm64** on Linux glibc / macOS / Windows. V8, NuGet, Conda, iOS, Android, musl, 32-bit, macOS universal, and WebAssembly targets are not built (use upstream for those).
 - A minor patch to `public/fpdfview.h` guards the Windows dllimport/dllexport block with `FPDF_STATIC` so the same headers work for static consumers.
 
 ## Related projects

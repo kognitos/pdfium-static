@@ -2,8 +2,6 @@
 
 IS_DEBUG=${PDFium_IS_DEBUG:-false}
 OS=${PDFium_TARGET_OS:?}
-TARGET_CPU=${PDFium_TARGET_CPU:?}
-TARGET_ENVIRONMENT=${PDFium_TARGET_ENVIRONMENT:-}
 VERSION=${PDFium_VERSION:-}
 PATCHES="$PWD/patches"
 BUILD_TYPE=${PDFium_BUILD_TYPE:-shared}
@@ -42,24 +40,16 @@ rm -f "$STAGING/include/README"
 rm -f "$STAGING/include/PRESUBMIT.py"
 
 case "$OS-$BUILD_TYPE" in
-  android-shared|linux-shared)
+  linux-shared)
     mv "$BUILD/libpdfium.so" "$STAGING_LIB"
     ;;
 
-  android-static|linux-static|mac-static|ios-static)
+  linux-static|mac-static)
     mv "$BUILD/obj/libpdfium.a" "$STAGING_LIB"
     ;;
 
-  mac-shared|ios-shared)
+  mac-shared)
     mv "$BUILD/libpdfium.dylib" "$STAGING_LIB"
-    ;;
-
-  emscripten-*)
-    mv "$BUILD/pdfium.html" "$STAGING_LIB"
-    mv "$BUILD/pdfium.js" "$STAGING_LIB"
-    mv "$BUILD/pdfium.wasm" "$STAGING_LIB"
-    rm -rf "$STAGING/include/cpp"
-    rm "$STAGING/PDFiumConfig.cmake"
     ;;
 
   win-shared)
@@ -87,7 +77,7 @@ esac
 #
 # Licenses: libc++ and libc++abi are dual-licensed under Apache 2.0
 # with LLVM Exceptions and MIT.
-if [ "$OS" == "linux" ] && [ "$BUILD_TYPE" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ]; then
+if [ "$OS" == "linux" ] && [ "$BUILD_TYPE" == "static" ]; then
   ninja -C "$BUILD" \
     obj/buildtools/third_party/libc++/libc++.a \
     obj/buildtools/third_party/libc++abi/libc++abi.a

@@ -27,121 +27,6 @@ on:
         default: false
 
 jobs:
-  android_arm:
-    name: Android ARM
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: android
-      target_cpu: arm
-      build_type: static
-
-  android_arm64:
-    name: Android ARM64
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: android
-      target_cpu: arm64
-      build_type: static
-
-  android_x64:
-    name: Android x64
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: android
-      target_cpu: x64
-      build_type: static
-
-  android_x86:
-    name: Android x86
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: android
-      target_cpu: x86
-      build_type: static
-
-  ios_catalyst_arm64:
-    name: iOS catalyst ARM64
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: ios
-      target_cpu: arm64
-      target_environment: catalyst
-      build_type: static
-
-  ios_catalyst_x64:
-    name: iOS catalyst x64
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: ios
-      target_cpu: x64
-      target_environment: catalyst
-      build_type: static
-
-  ios_device_arm64:
-    name: iOS device ARM64
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: ios
-      target_cpu: arm64
-      target_environment: device
-      build_type: static
-
-  ios_simulator_arm64:
-    name: iOS simulator ARM64
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: ios
-      target_cpu: arm64
-      target_environment: simulator
-      build_type: static
-
-  ios_simulator_x64:
-    name: iOS simulator x64
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: ios
-      target_cpu: x64
-      target_environment: simulator
-      build_type: static
-
-  linux_arm:
-    name: Linux ARM
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: linux
-      target_cpu: arm
-      build_type: static
-
   linux_arm64:
     name: Linux ARM64
     uses: ./.github/workflows/build.yml
@@ -153,17 +38,6 @@ jobs:
       target_cpu: arm64
       build_type: static
 
-  linux_ppc64:
-    name: Linux ppc64
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: linux
-      target_cpu: ppc64
-      build_type: static
-
   linux_x64:
     name: Linux x64
     uses: ./.github/workflows/build.yml
@@ -173,56 +47,6 @@ jobs:
       is_debug: ${{ github.event.inputs.is_debug == 'true' }}
       target_os: linux
       target_cpu: x64
-      build_type: static
-
-  linux_x86:
-    name: Linux x86
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: linux
-      target_cpu: x86
-      build_type: static
-
-  linux_musl_arm64:
-    name: Linux musl ARM64
-    uses: ./.github/workflows/build.yml
-    secrets: inherit
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: linux
-      target_cpu: arm64
-      target_environment: musl
-      build_type: static
-
-  linux_musl_x64:
-    name: Linux musl x64
-    uses: ./.github/workflows/build.yml
-    secrets: inherit
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: linux
-      target_cpu: x64
-      target_environment: musl
-      build_type: static
-
-  linux_musl_x86:
-    name: Linux musl x86
-    uses: ./.github/workflows/build.yml
-    secrets: inherit
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: linux
-      target_cpu: x86
-      target_environment: musl
       build_type: static
 
   mac_arm64:
@@ -269,17 +93,6 @@ jobs:
       target_cpu: x64
       build_type: static
 
-  win_x86:
-    name: Windows x86
-    uses: ./.github/workflows/build.yml
-    with:
-      branch: ${{ github.event.inputs.branch }}
-      version: ${{ github.event.inputs.version }}
-      is_debug: ${{ github.event.inputs.is_debug == 'true' }}
-      target_os: win
-      target_cpu: x86
-      build_type: static
-
   publish:
     name: Publish Release
     outputs:
@@ -288,25 +101,12 @@ jobs:
     if: startsWith(github.event.inputs.branch, 'chromium/') && github.event.inputs.version && github.event.inputs.release == 'true'
     runs-on: ubuntu-latest
     needs:
-      - android_arm
-      - android_arm64
-      - android_x64
-      - android_x86
-      - ios_device_arm64
-      - ios_simulator_x64
-      - linux_arm
       - linux_arm64
-      - linux_musl_arm64
-      - linux_musl_x64
-      - linux_musl_x86
-      - linux_ppc64
       - linux_x64
-      - linux_x86
       - mac_arm64
       - mac_x64
       - win_arm64
       - win_x64
-      - win_x86
     permissions:
       contents: write # to create releases
       id-token: write # to attest build provenance

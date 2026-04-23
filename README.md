@@ -160,6 +160,12 @@ The `pdfium` CMake target propagates everything consumers need:
 
 If you can't use `find_package`, on Windows you must define `FPDF_STATIC` for every translation unit that includes PDFium headers (otherwise the compiler will emit `__declspec(dllimport)` on every `FPDF_*` function, leading to unresolved `__imp_*` symbols at link time). On Linux/macOS/iOS/Android, no extra define is needed.
 
+### Bundled libstdc++ (Linux glibc tarballs)
+
+For Linux glibc targets, `libstdc++.a` is bundled alongside `libpdfium.a` so that consumers don't need `libstdc++-XX-dev` installed on their build host. `find_package(PDFium)` automatically links the bundled archive; consumers who don't use CMake can link it with `-l:libstdc++.a` or by giving the full path.
+
+`libstdc++` is licensed under GPL-3 with the [GCC Runtime Library Exception](https://www.gnu.org/licenses/gcc-exception-3.1.html), which explicitly permits static linking into non-GPL consumer code.
+
 ## Relationship to upstream
 
 This fork tracks [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries/) and follows the same weekly build cadence against upstream PDFium's `chromium/*` branches. The only meaningful divergences are:

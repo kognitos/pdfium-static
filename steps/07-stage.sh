@@ -2,6 +2,8 @@
 
 IS_DEBUG=${PDFium_IS_DEBUG:-false}
 OS=${PDFium_TARGET_OS:?}
+TARGET_CPU=${PDFium_TARGET_CPU:?}
+TARGET_ENVIRONMENT=${PDFium_TARGET_ENVIRONMENT:-}
 VERSION=${PDFium_VERSION:-}
 PATCHES="$PWD/patches"
 BUILD_TYPE=${PDFium_BUILD_TYPE:-shared}
@@ -71,6 +73,25 @@ case "$OS-$BUILD_TYPE" in
     mv "$BUILD/obj/pdfium.lib" "$STAGING_LIB"
     ;;
 esac
+
+# Bundle libstdc++.a into the tarball for Linux glibc static builds so
+# consumers don't need libstdc++-XX-dev installed. The C++ runtime is
+# GPL-3 with the GCC Runtime Library Exception, which permits inclusion
+# in redistributable binaries.
+if [ "$OS" == "linux" ] && [ "$BUILD_TYPE" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ]; then
+  case "$TARGET_CPU" in
+    arm)   STDCXX_GCC="arm-linux-gnueabihf-gcc-10" ;;
+    arm64) STDCXX_GCC="aarch64-linux-gnu-gcc-10" ;;
+    ppc64) STDCXX_GCC="powerpc64le-linux-gnu-gcc" ;;
+    *)     STDCXX_GCC="gcc" ;;
+  esac
+  if command -v "$STDCXX_GCC" >/dev/null; then
+    STDCXX_A=$("$STDCXX_GCC" --print-file-name=libstdc++.a 2>/dev/null || true)
+    if [ -n "$STDCXX_A" ] && [ -f "$STDCXX_A" ]; then
+      cp "$STDCXX_A" "$STAGING_LIB/"
+    fi
+  fi
+fi
 
 if [ -n "$VERSION" ]; then
   cat >"$STAGING/VERSION" <<END

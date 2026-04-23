@@ -48,8 +48,19 @@ else()
         NAMES "pdfium"
         PATHS "${CMAKE_CURRENT_LIST_DIR}"
         PATH_SUFFIXES "lib")
-  # Linux (glibc and musl) — both upstream builds use libstdc++.
-  set(PDFium_SYSTEM_LIBS stdc++ pthread dl m)
+  # Prefer the bundled libstdc++.a (ships alongside libpdfium.a for glibc
+  # Linux targets); fall back to the system libstdc++ if the tarball
+  # doesn't include one (e.g. musl builds).
+  find_file(PDFium_STDCXX_LIBRARY
+        NAMES "libstdc++.a"
+        PATHS "${CMAKE_CURRENT_LIST_DIR}"
+        PATH_SUFFIXES "lib"
+        NO_DEFAULT_PATH)
+  if(PDFium_STDCXX_LIBRARY)
+    set(PDFium_SYSTEM_LIBS "${PDFium_STDCXX_LIBRARY}" pthread dl m)
+  else()
+    set(PDFium_SYSTEM_LIBS stdc++ pthread dl m)
+  endif()
 endif()
 
 add_library(pdfium STATIC IMPORTED)

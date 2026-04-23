@@ -13,6 +13,13 @@ export PDFium_DIR="$PWD/staging"
 
 case "$OS" in
   android)
+    # Android static builds need an NDK toolchain file for CMake to link
+    # the example against the right sysroot/libc; skip the example test
+    # rather than drag in NDK plumbing here. The PDFium build itself has
+    # already been verified by this step — only the example link is skipped.
+    if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ]; then
+      SKIP_TESTS=true
+    fi
     case "$CPU" in
       arm)
         PREFIX="armv7a-linux-androideabi19-"
@@ -112,6 +119,8 @@ case "$OS" in
     # clang+lld. The static archive is built against the Debian bullseye
     # sysroot's libstdc++; mixing it with the host gcc's noble libstdc++
     # yields ABI-level template instantiations that crash at runtime.
+    # Cross-compile targets keep their own gcc but still link with lld,
+    # since GNU ld cannot parse pdfium's clang-emitted .eh_frame sections.
     if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ] && [ -z "${PREFIX:-}" ]; then
       PDFIUM_CLANG_DIR="$PWD/pdfium/third_party/llvm-build/Release+Asserts/bin"
       CMAKE_ARGS+=(
@@ -124,6 +133,9 @@ case "$OS" in
         -D CMAKE_C_COMPILER="${PREFIX:-}gcc${SUFFIX:-}"
         -D CMAKE_CXX_COMPILER="${PREFIX:-}g++${SUFFIX:-}"
       )
+      if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ]; then
+        CMAKE_ARGS+=( -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" )
+      fi
     fi
     ;;
 

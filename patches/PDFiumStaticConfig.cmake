@@ -30,12 +30,19 @@ elseif(APPLE)
         NAMES "pdfium"
         PATHS "${CMAKE_CURRENT_LIST_DIR}"
         PATH_SUFFIXES "lib")
+  # iOS targets (device, simulator, catalyst) expose UIKit; macOS exposes
+  # AppKit. AppKit does not exist on the iphoneos / iphonesimulator SDKs.
+  if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+    set(PDFium_UI_FRAMEWORK "UIKit")
+  else()
+    set(PDFium_UI_FRAMEWORK "AppKit")
+  endif()
   set(PDFium_SYSTEM_LIBS
     c++
     "-framework CoreGraphics"
     "-framework CoreFoundation"
     "-framework CoreText"
-    "-framework AppKit")
+    "-framework ${PDFium_UI_FRAMEWORK}")
 elseif(ANDROID)
   find_library(PDFium_LIBRARY
         NAMES "pdfium"

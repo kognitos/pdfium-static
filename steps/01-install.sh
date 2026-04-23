@@ -67,7 +67,12 @@ case "$TARGET_OS" in
           ;;
       esac
 
-      [ -d "$MUSL_VERSION" ] || curl -L "$MUSL_URL/$MUSL_VERSION.tgz" | tar xz
+      # musl.cc occasionally times out. Use curl's own retry for transient
+      # network flakes: 5 attempts, exponential backoff, total cap 3 min.
+      if [ ! -d "$MUSL_VERSION" ]; then
+        curl -L --retry 5 --retry-delay 10 --retry-max-time 180 \
+          "$MUSL_URL/$MUSL_VERSION.tgz" | tar xz
+      fi
       echo "$PWD/$MUSL_VERSION/bin" >> "$PATH_FILE"
 
       sudo apt-get install -y $PACKAGES

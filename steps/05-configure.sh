@@ -22,6 +22,10 @@ mkdir -p "$BUILD"
 
   if [ "$BUILD_TYPE" == "static" ]; then
     echo "pdf_is_complete_lib = true"
+    # Chromium's default_symbol_level is 2 on mac/win (full DWARF in .o files)
+    # but 0 on Linux release builds (stripped). Force level 2 everywhere so
+    # consumers of the static archive get usable backtraces on every platform.
+    echo "symbol_level = 2"
     # On Linux glibc, keep Chromium's vendored libc++ (std::__Cr::* namespace)
     # so the archive's C++ runtime ABI is pinned to the exact build toolchain;
     # libc++.a and libc++abi.a are bundled alongside libpdfium.a in the tarball.

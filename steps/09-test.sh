@@ -112,6 +112,13 @@ case "$OS" in
       -D CMAKE_C_COMPILER="${PREFIX:-}gcc${SUFFIX:-}"
       -D CMAKE_CXX_COMPILER="${PREFIX:-}g++${SUFFIX:-}"
     )
+    # For static builds on glibc, link with lld: GNU ld cannot parse the
+    # .eh_frame sections emitted by PDFium's Chromium-shipped clang.
+    if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ]; then
+      CMAKE_ARGS+=(
+        -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld"
+      )
+    fi
     ;;
 
   mac)

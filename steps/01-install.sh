@@ -25,12 +25,7 @@ case "$TARGET_OS" in
 
     case "$TARGET_CPU" in
       arm64)
-        if [ "$(uname -m)" == "aarch64" ]; then
-          # Native arm64 runner — just g++.
-          sudo apt-get install -y g++
-        else
-          sudo apt-get install -y libc6-i386 gcc-10-multilib g++-10-aarch64-linux-gnu gcc-10-aarch64-linux-gnu
-        fi
+        sudo apt-get install -y libc6-i386 gcc-10-multilib g++-10-aarch64-linux-gnu gcc-10-aarch64-linux-gnu
         ;;
 
       x64)

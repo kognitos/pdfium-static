@@ -11,31 +11,38 @@ export PDFium_DIR="$PWD/staging"
 
 case "$OS" in
   linux)
-    case "$CPU" in
-      arm64)
-        if [ "$(uname -m)" == "aarch64" ]; then
-          CAN_RUN_ON_HOST=true
-        else
-          PREFIX="aarch64-linux-gnu-"
-          SUFFIX="-10"
-        fi
-        ;;
-      x64)
-        CAN_RUN_ON_HOST=true
-        ;;
-    esac
-    # For static glibc builds, compile the example with PDFium's shipped
-    # clang+lld. The static archive is built against the Debian bullseye
-    # sysroot's libstdc++; mixing it with the host gcc's noble libstdc++
-    # yields ABI-level template instantiations that crash at runtime.
-    if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ] && [ -z "${PREFIX:-}" ]; then
+    # Static builds: link the example with PDFium's shipped clang+lld to
+    # match the toolchain the archive was compiled against. For arm64
+    # cross-compile, drive clang with --target and the pdfium sysroot.
+    if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ]; then
       PDFIUM_CLANG_DIR="$PWD/pdfium/third_party/llvm-build/Release+Asserts/bin"
+      EXTRA_CFLAGS="-fuse-ld=lld"
+      case "$CPU" in
+        arm64)
+          SYSROOT="$PWD/pdfium/build/linux/debian_bullseye_arm64-sysroot"
+          EXTRA_CFLAGS="--target=aarch64-linux-gnu --sysroot=$SYSROOT $EXTRA_CFLAGS"
+          ;;
+        x64)
+          CAN_RUN_ON_HOST=true
+          ;;
+      esac
       CMAKE_ARGS+=(
         -D CMAKE_C_COMPILER="$PDFIUM_CLANG_DIR/clang"
         -D CMAKE_CXX_COMPILER="$PDFIUM_CLANG_DIR/clang++"
-        -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld"
+        -D CMAKE_C_FLAGS="$EXTRA_CFLAGS"
+        -D CMAKE_CXX_FLAGS="$EXTRA_CFLAGS"
+        -D CMAKE_EXE_LINKER_FLAGS="$EXTRA_CFLAGS"
       )
     else
+      case "$CPU" in
+        arm64)
+          PREFIX="aarch64-linux-gnu-"
+          SUFFIX="-10"
+          ;;
+        x64)
+          CAN_RUN_ON_HOST=true
+          ;;
+      esac
       CMAKE_ARGS+=(
         -D CMAKE_C_COMPILER="${PREFIX:-}gcc${SUFFIX:-}"
         -D CMAKE_CXX_COMPILER="${PREFIX:-}g++${SUFFIX:-}"

@@ -11,19 +11,19 @@ echo "target_os = [ '$OS' ]" >> .gclient
 # pdfium's DEPS has an unconditional cipd dep on infra/rbe/client/<platform>,
 # but that package isn't published for linux-arm64 hosts — gclient sync
 # would abort there. We never invoke remote execution during the build,
-# so null the dep out via custom_deps.
+# so null the dep out via custom_deps on the existing solution entry.
 python3 <<'END'
 import re, pathlib
 p = pathlib.Path('.gclient')
 src = p.read_text()
-# Insert custom_deps into the pdfium solution entry.
 src = re.sub(
-    r'("name"\s*:\s*"pdfium",)',
-    r'\1\n    "custom_deps": {"pdfium/buildtools/reclient": None},',
+    r'"custom_deps"\s*:\s*\{',
+    '"custom_deps" : {\n      "pdfium/buildtools/reclient": None,',
     src,
     count=1,
 )
 p.write_text(src)
+print(src)
 END
 
 

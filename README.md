@@ -160,11 +160,13 @@ The `pdfium` CMake target propagates everything consumers need:
 
 If you can't use `find_package`, on Windows you must define `FPDF_STATIC` for every translation unit that includes PDFium headers (otherwise the compiler will emit `__declspec(dllimport)` on every `FPDF_*` function, leading to unresolved `__imp_*` symbols at link time). On Linux/macOS/iOS/Android, no extra define is needed.
 
-### Bundled libstdc++ (Linux glibc tarballs)
+### Bundled libc++ (Linux glibc tarballs)
 
-For Linux glibc targets, `libstdc++.a` is bundled alongside `libpdfium.a` so that consumers don't need `libstdc++-XX-dev` installed on their build host. `find_package(PDFium)` automatically links the bundled archive; consumers who don't use CMake can link it with `-l:libstdc++.a` or by giving the full path.
+For Linux glibc targets, Chromium's vendored C++ runtime (`libc++.a`, `libc++abi.a`, `libunwind.a`) is bundled alongside `libpdfium.a`. This is the exact toolchain PDFium was compiled against, so consumers never have to worry about the host's `libstdc++` or `libc++` version matching. `find_package(PDFium)` links the bundled archives automatically.
 
-`libstdc++` is licensed under GPL-3 with the [GCC Runtime Library Exception](https://www.gnu.org/licenses/gcc-exception-3.1.html), which explicitly permits static linking into non-GPL consumer code.
+The bundled libc++ build uses Chromium's [inline namespace mangling](https://libcxx.llvm.org/DesignDocs/ABIVersioning.html) (`std::__Cr::*`), so it does not collide with any other C++ runtime your program may also link (system `libstdc++`, a second `libc++`, etc.). Consumer code written against `std::` types works with the consumer's own C++ runtime; PDFium's internal `std::__Cr::*` references are satisfied by the bundled archives only.
+
+`libc++` and `libc++abi` are dual-licensed under Apache 2.0 with LLVM Exceptions and MIT; `libunwind` under Apache 2.0. Redistribution and static linking into non-GPL consumer code are explicitly permitted.
 
 ## Relationship to upstream
 

@@ -48,16 +48,33 @@ else()
         NAMES "pdfium"
         PATHS "${CMAKE_CURRENT_LIST_DIR}"
         PATH_SUFFIXES "lib")
-  # Prefer the bundled libstdc++.a (ships alongside libpdfium.a for glibc
-  # Linux targets); fall back to the system libstdc++ if the tarball
-  # doesn't include one (e.g. musl builds).
-  find_file(PDFium_STDCXX_LIBRARY
-        NAMES "libstdc++.a"
+  # Glibc tarballs ship Chromium's vendored libc++ (std::__Cr::*) so the
+  # archive's C++ runtime ABI is pinned to its build toolchain. Musl
+  # tarballs don't ship these; fall back to the system libstdc++.
+  find_file(PDFium_LIBCXX_LIBRARY
+        NAMES "libc++.a"
         PATHS "${CMAKE_CURRENT_LIST_DIR}"
         PATH_SUFFIXES "lib"
         NO_DEFAULT_PATH)
-  if(PDFium_STDCXX_LIBRARY)
-    set(PDFium_SYSTEM_LIBS "${PDFium_STDCXX_LIBRARY}" pthread dl m)
+  find_file(PDFium_LIBCXXABI_LIBRARY
+        NAMES "libc++abi.a"
+        PATHS "${CMAKE_CURRENT_LIST_DIR}"
+        PATH_SUFFIXES "lib"
+        NO_DEFAULT_PATH)
+  find_file(PDFium_LIBUNWIND_LIBRARY
+        NAMES "libunwind.a"
+        PATHS "${CMAKE_CURRENT_LIST_DIR}"
+        PATH_SUFFIXES "lib"
+        NO_DEFAULT_PATH)
+  if(PDFium_LIBCXX_LIBRARY)
+    set(PDFium_SYSTEM_LIBS "${PDFium_LIBCXX_LIBRARY}")
+    if(PDFium_LIBCXXABI_LIBRARY)
+      list(APPEND PDFium_SYSTEM_LIBS "${PDFium_LIBCXXABI_LIBRARY}")
+    endif()
+    if(PDFium_LIBUNWIND_LIBRARY)
+      list(APPEND PDFium_SYSTEM_LIBS "${PDFium_LIBUNWIND_LIBRARY}")
+    endif()
+    list(APPEND PDFium_SYSTEM_LIBS pthread dl m)
   else()
     set(PDFium_SYSTEM_LIBS stdc++ pthread dl m)
   endif()

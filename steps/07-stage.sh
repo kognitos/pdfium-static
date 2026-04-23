@@ -74,23 +74,21 @@ case "$OS-$BUILD_TYPE" in
     ;;
 esac
 
-# Bundle libstdc++.a into the tarball for Linux glibc static builds so
-# consumers don't need libstdc++-XX-dev installed. The C++ runtime is
-# GPL-3 with the GCC Runtime Library Exception, which permits inclusion
-# in redistributable binaries.
+# Bundle Chromium's vendored libc++ (+ libc++abi, libunwind) into the
+# tarball for Linux glibc static builds. These match the exact C++
+# runtime ABI that PDFium's objects were compiled against — consumers
+# never have to worry about host libstdc++/libc++ compatibility. libc++
+# and libc++abi use the std::__Cr::* namespace so they don't collide
+# with any C++ runtime the consumer might also link.
+# Licenses: libc++ and libc++abi are dual-licensed under Apache 2.0 with
+# LLVM Exceptions and MIT (permissive redistribution).
 if [ "$OS" == "linux" ] && [ "$BUILD_TYPE" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ]; then
-  case "$TARGET_CPU" in
-    arm)   STDCXX_GCC="arm-linux-gnueabihf-gcc-10" ;;
-    arm64) STDCXX_GCC="aarch64-linux-gnu-gcc-10" ;;
-    ppc64) STDCXX_GCC="powerpc64le-linux-gnu-gcc" ;;
-    *)     STDCXX_GCC="gcc" ;;
-  esac
-  if command -v "$STDCXX_GCC" >/dev/null; then
-    STDCXX_A=$("$STDCXX_GCC" --print-file-name=libstdc++.a 2>/dev/null || true)
-    if [ -n "$STDCXX_A" ] && [ -f "$STDCXX_A" ]; then
-      cp "$STDCXX_A" "$STAGING_LIB/"
+  for LIB_NAME in libc++.a libc++abi.a libunwind.a; do
+    LIB_PATH=$(find "$BUILD/obj" -name "$LIB_NAME" -type f | head -n1)
+    if [ -n "$LIB_PATH" ] && [ -f "$LIB_PATH" ]; then
+      cp "$LIB_PATH" "$STAGING_LIB/"
     fi
-  fi
+  done
 fi
 
 if [ -n "$VERSION" ]; then

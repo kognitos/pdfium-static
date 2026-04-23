@@ -108,15 +108,21 @@ case "$OS" in
         fi
         ;;
     esac
-    CMAKE_ARGS+=(
-      -D CMAKE_C_COMPILER="${PREFIX:-}gcc${SUFFIX:-}"
-      -D CMAKE_CXX_COMPILER="${PREFIX:-}g++${SUFFIX:-}"
-    )
-    # For static builds on glibc, link with lld: GNU ld cannot parse the
-    # .eh_frame sections emitted by PDFium's Chromium-shipped clang.
-    if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ]; then
+    # For static glibc builds, compile the example with PDFium's shipped
+    # clang+lld. The static archive is built against the Debian bullseye
+    # sysroot's libstdc++; mixing it with the host gcc's noble libstdc++
+    # yields ABI-level template instantiations that crash at runtime.
+    if [ "${PDFium_BUILD_TYPE:-shared}" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ] && [ -z "${PREFIX:-}" ]; then
+      PDFIUM_CLANG_DIR="$PWD/pdfium/third_party/llvm-build/Release+Asserts/bin"
       CMAKE_ARGS+=(
+        -D CMAKE_C_COMPILER="$PDFIUM_CLANG_DIR/clang"
+        -D CMAKE_CXX_COMPILER="$PDFIUM_CLANG_DIR/clang++"
         -D CMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld"
+      )
+    else
+      CMAKE_ARGS+=(
+        -D CMAKE_C_COMPILER="${PREFIX:-}gcc${SUFFIX:-}"
+        -D CMAKE_CXX_COMPILER="${PREFIX:-}g++${SUFFIX:-}"
       )
     fi
     ;;

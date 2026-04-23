@@ -61,18 +61,10 @@ else()
         PATHS "${CMAKE_CURRENT_LIST_DIR}"
         PATH_SUFFIXES "lib"
         NO_DEFAULT_PATH)
-  find_file(PDFium_LIBUNWIND_LIBRARY
-        NAMES "libunwind.a"
-        PATHS "${CMAKE_CURRENT_LIST_DIR}"
-        PATH_SUFFIXES "lib"
-        NO_DEFAULT_PATH)
   if(PDFium_LIBCXX_LIBRARY)
     set(PDFium_SYSTEM_LIBS "${PDFium_LIBCXX_LIBRARY}")
     if(PDFium_LIBCXXABI_LIBRARY)
       list(APPEND PDFium_SYSTEM_LIBS "${PDFium_LIBCXXABI_LIBRARY}")
-    endif()
-    if(PDFium_LIBUNWIND_LIBRARY)
-      list(APPEND PDFium_SYSTEM_LIBS "${PDFium_LIBUNWIND_LIBRARY}")
     endif()
     list(APPEND PDFium_SYSTEM_LIBS pthread dl m)
   else()

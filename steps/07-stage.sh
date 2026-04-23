@@ -74,19 +74,32 @@ case "$OS-$BUILD_TYPE" in
     ;;
 esac
 
-# Bundle Chromium's vendored libc++ (+ libc++abi, libunwind) into the
-# tarball for Linux glibc static builds. These match the exact C++
-# runtime ABI that PDFium's objects were compiled against — consumers
-# never have to worry about host libstdc++/libc++ compatibility. libc++
-# and libc++abi use the std::__Cr::* namespace so they don't collide
-# with any C++ runtime the consumer might also link.
-# Licenses: libc++ and libc++abi are dual-licensed under Apache 2.0 with
-# LLVM Exceptions and MIT (permissive redistribution).
+# Bundle Chromium's vendored libc++ (+ libc++abi) into the tarball for
+# Linux glibc static builds. These match the exact C++ runtime ABI that
+# PDFium's objects were compiled against, so consumers never have to
+# worry about host libstdc++/libc++ compatibility. The archives use the
+# std::__Cr::* namespace so they don't collide with any other C++
+# runtime the consumer might also link.
+#
+# Neither target is in libpdfium.a's transitive deps, so ninja doesn't
+# build them by default — invoke them explicitly, then reify the thin
+# archives (which are just pointer lists) into standalone .a files.
+#
+# Licenses: libc++ and libc++abi are dual-licensed under Apache 2.0
+# with LLVM Exceptions and MIT.
 if [ "$OS" == "linux" ] && [ "$BUILD_TYPE" == "static" ] && [ "$TARGET_ENVIRONMENT" != "musl" ]; then
-  for LIB_NAME in libc++.a libc++abi.a libunwind.a; do
-    LIB_PATH=$(find "$BUILD/obj" -name "$LIB_NAME" -type f | head -n1)
-    if [ -n "$LIB_PATH" ] && [ -f "$LIB_PATH" ]; then
-      cp "$LIB_PATH" "$STAGING_LIB/"
+  ninja -C "$BUILD" \
+    obj/buildtools/third_party/libc++/libc++.a \
+    obj/buildtools/third_party/libc++abi/libc++abi.a
+  for PAIR in "libc++/libc++.a" "libc++abi/libc++abi.a"; do
+    THIN="$BUILD/obj/buildtools/third_party/$PAIR"
+    OUT="$STAGING_LIB/$(basename "$PAIR")"
+    if [ -f "$THIN" ]; then
+      ar -M <<END
+CREATE $OUT
+ADDLIB $THIN
+SAVE
+END
     fi
   done
 fi

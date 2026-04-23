@@ -39,7 +39,9 @@ case "$TARGET_OS" in
 
   linux)
     sudo apt-get update
-    sudo apt-get install -y cmake pkg-config
+    # lld is needed to link static-build example tests against PDFium's
+    # clang-emitted .eh_frame sections (GNU ld rejects them).
+    sudo apt-get install -y cmake pkg-config lld
 
     if [ "$TARGET_ENVIRONMENT" == "musl" ]; then
 

@@ -29,6 +29,10 @@ mkdir -p "$BUILD"
 
   if [ "$BUILD_TYPE" == "static" ]; then
     echo "pdf_is_complete_lib = true"
+    # Link against the system libc++/libstdc++ so consumers of the static
+    # archive don't need Chromium's vendored libc++ (std::__Cr::* symbols).
+    echo "use_custom_libcxx = false"
+    echo "use_custom_libcxx_for_host = false"
   fi
 
   case "$OS" in

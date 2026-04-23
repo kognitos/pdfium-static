@@ -1,4 +1,4 @@
-# PDFium Package Configuration for CMake
+# PDFium Package Configuration for CMake (static build)
 #
 # To use PDFium in your CMake project:
 #
@@ -23,33 +23,46 @@ if(WIN32)
         NAMES "pdfium.lib"
         PATHS "${CMAKE_CURRENT_LIST_DIR}"
         PATH_SUFFIXES "lib")
-
-  add_library(pdfium STATIC IMPORTED)
-  set_target_properties(pdfium
-    PROPERTIES
-    IMPORTED_LOCATION             "${PDFium_LIBRARY}"
-    INTERFACE_INCLUDE_DIRECTORIES "${PDFium_INCLUDE_DIR};${PDFium_INCLUDE_DIR}/cpp"
-  )
-
-  find_package_handle_standard_args(PDFium
-    REQUIRED_VARS PDFium_LIBRARY PDFium_INCLUDE_DIR
-    VERSION_VAR PDFium_VERSION
-  )
+  # MSVC auto-links the C/C++ runtime; no explicit stdlib entry needed.
+  set(PDFium_SYSTEM_LIBS gdi32 user32 advapi32 comdlg32 shell32)
+elseif(APPLE)
+  find_library(PDFium_LIBRARY
+        NAMES "pdfium"
+        PATHS "${CMAKE_CURRENT_LIST_DIR}"
+        PATH_SUFFIXES "lib")
+  set(PDFium_SYSTEM_LIBS
+    c++
+    "-framework CoreGraphics"
+    "-framework CoreFoundation"
+    "-framework CoreText"
+    "-framework AppKit")
+elseif(ANDROID)
+  find_library(PDFium_LIBRARY
+        NAMES "pdfium"
+        PATHS "${CMAKE_CURRENT_LIST_DIR}"
+        PATH_SUFFIXES "lib")
+  # Android NDK provides libc++ as the default STL.
+  set(PDFium_SYSTEM_LIBS c++ pthread dl m)
 else()
   find_library(PDFium_LIBRARY
         NAMES "pdfium"
         PATHS "${CMAKE_CURRENT_LIST_DIR}"
         PATH_SUFFIXES "lib")
-
-  add_library(pdfium STATIC IMPORTED)
-  set_target_properties(pdfium
-    PROPERTIES
-    IMPORTED_LOCATION             "${PDFium_LIBRARY}"
-    INTERFACE_INCLUDE_DIRECTORIES "${PDFium_INCLUDE_DIR};${PDFium_INCLUDE_DIR}/cpp"
-  )
-
-  find_package_handle_standard_args(PDFium
-    REQUIRED_VARS PDFium_LIBRARY PDFium_INCLUDE_DIR
-    VERSION_VAR PDFium_VERSION
-  )
+  # Linux (glibc and musl) — both upstream builds use libstdc++.
+  set(PDFium_SYSTEM_LIBS stdc++ pthread dl m)
 endif()
+
+add_library(pdfium STATIC IMPORTED)
+set_target_properties(pdfium
+  PROPERTIES
+  IMPORTED_LOCATION                 "${PDFium_LIBRARY}"
+  IMPORTED_LINK_INTERFACE_LANGUAGES "CXX"
+  INTERFACE_INCLUDE_DIRECTORIES     "${PDFium_INCLUDE_DIR};${PDFium_INCLUDE_DIR}/cpp"
+  INTERFACE_COMPILE_DEFINITIONS     "FPDF_STATIC"
+  INTERFACE_LINK_LIBRARIES          "${PDFium_SYSTEM_LIBS}"
+)
+
+find_package_handle_standard_args(PDFium
+  REQUIRED_VARS PDFium_LIBRARY PDFium_INCLUDE_DIR
+  VERSION_VAR PDFium_VERSION
+)

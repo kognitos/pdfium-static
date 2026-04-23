@@ -1,20 +1,11 @@
-<p align="center">
-  <img alt="PDFium binaries" src=".github/images/header.svg" />
-</p>
+# Pre-compiled static binaries of PDFium
 
-# Pre-compiled binaries of PDFium
+[![Latest release](https://img.shields.io/github/v/release/kognitos/pdfium-static?display_name=release&label=github)](https://github.com/kognitos/pdfium-static/releases/latest/)
+[![Total downloads](https://img.shields.io/github/downloads/kognitos/pdfium-static/total)](https://github.com/kognitos/pdfium-static/releases/)
 
-[![Patches](https://github.com/bblanchon/pdfium-binaries/actions/workflows/patch.yml/badge.svg?branch=master)](https://github.com/bblanchon/pdfium-binaries/actions/workflows/patch.yml)
-[![Total downloads](https://img.shields.io/github/downloads/bblanchon/pdfium-binaries/total)](https://github.com/bblanchon/pdfium-binaries/releases/)
+This project hosts pre-compiled **static** binaries of the [PDFium library](https://pdfium.googlesource.com/pdfium/), an open-source library for PDF manipulation and rendering.
 
-[![Latest release](https://img.shields.io/github/v/release/bblanchon/pdfium-binaries?display_name=release&label=github)](https://github.com/bblanchon/pdfium-binaries/releases/latest/)
-[![Nuget](https://img.shields.io/nuget/v/bblanchon.PDFium)](https://www.nuget.org/packages/bblanchon.PDFium/)
-[![Conda](https://img.shields.io/conda/v/bblanchon/pdfium-binaries?label=conda)](https://anaconda.org/bblanchon/pdfium-binaries)
-
-
-This project hosts pre-compiled binaries of the [PDFium library](https://pdfium.googlesource.com/pdfium/), an open-source library for PDF manipulation and rendering.
-
-Builds have been triggered automatically every Monday since 2017.
+It is a fork of [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries/), specialized to produce static archives (`.a` on Linux/macOS/iOS/Android, `.lib` on Windows) so that PDFium can be linked directly into an application without shipping a separate shared library.
 
 **Disclaimer**: This project isn't affiliated with Google or Foxit.
 
@@ -27,218 +18,122 @@ Here are the download links for latest release:
     <th>OS</th>
     <th>Env</th>
     <th>CPU</th>
-    <th>PDFium</th>
-    <th>PDFium V8</th>
+    <th>PDFium (static)</th>
   </tr>
 
   <tr>
     <td rowspan="4" colspan=2>Android</td>
     <td>arm</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-android-arm.tgz">pdfium-android-arm.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-android-arm.tgz">pdfium-v8-android-arm.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-android-arm-static.tgz">pdfium-android-arm-static.tgz</a></td>
   </tr>
   <tr>
     <td>arm64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-android-arm64.tgz">pdfium-android-arm64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-android-arm64.tgz">pdfium-v8-android-arm64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-android-arm64-static.tgz">pdfium-android-arm64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-android-x64.tgz">pdfium-android-x64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-android-x64.tgz">pdfium-v8-android-x64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-android-x64-static.tgz">pdfium-android-x64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x86</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-android-x86.tgz">pdfium-android-x86.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-android-x86.tgz">pdfium-v8-android-x86.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-android-x86-static.tgz">pdfium-android-x86-static.tgz</a></td>
   </tr>
 
   <tr>
     <td rowspan="5">iOS</td>
     <td rowspan="2">catalyst</td>
     <td>arm64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-ios-catalyst-arm64.tgz">pdfium-ios-catalyst-arm64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-ios-catalyst-arm64.tgz">pdfium-v8-ios-catalyst-arm64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-catalyst-arm64-static.tgz">pdfium-ios-catalyst-arm64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-ios-catalyst-x64.tgz">pdfium-ios-catalyst-x64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-ios-catalyst-x64.tgz">pdfium-v8-ios-catalyst-x64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-catalyst-x64-static.tgz">pdfium-ios-catalyst-x64-static.tgz</a></td>
   </tr>
-
   <tr>
     <td>device</td>
     <td>arm64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-ios-device-arm64.tgz">pdfium-ios-device-arm64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-ios-device-arm64.tgz">pdfium-v8-ios-device-arm64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-device-arm64-static.tgz">pdfium-ios-device-arm64-static.tgz</a></td>
   </tr>
-
   <tr>
     <td rowspan="2">simulator</td>
     <td>arm64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-ios-simulator-arm64.tgz">pdfium-ios-simulator-arm64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-ios-simulator-arm64.tgz">pdfium-v8-ios-simulator-arm64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-simulator-arm64-static.tgz">pdfium-ios-simulator-arm64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-ios-simulator-x64.tgz">pdfium-ios-simulator-x64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-ios-simulator-x64.tgz">pdfium-v8-ios-simulator-x64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-ios-simulator-x64-static.tgz">pdfium-ios-simulator-x64-static.tgz</a></td>
   </tr>
 
   <tr>
     <td rowspan="8">Linux</td>
     <td rowspan="5">glibc</td>
     <td>arm</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-arm.tgz">pdfium-linux-arm.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-linux-arm.tgz">pdfium-v8-linux-arm.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-arm-static.tgz">pdfium-linux-arm-static.tgz</a></td>
   </tr>
   <tr>
     <td>arm64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-arm64.tgz">pdfium-linux-arm64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-linux-arm64.tgz">pdfium-v8-linux-arm64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-arm64-static.tgz">pdfium-linux-arm64-static.tgz</a></td>
   </tr>
   <tr>
     <td>ppc64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-ppc64.tgz">pdfium-linux-ppc64.tgz</a></td>
-    <td>not tested yet</td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-ppc64-static.tgz">pdfium-linux-ppc64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-x64.tgz">pdfium-linux-x64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-linux-x64.tgz">pdfium-v8-linux-x64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-x64-static.tgz">pdfium-linux-x64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x86</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-x86.tgz">pdfium-linux-x86.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-linux-x86.tgz">pdfium-v8-linux-x86.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-x86-static.tgz">pdfium-linux-x86-static.tgz</a></td>
   </tr>
-
   <tr>
     <td rowspan="3">musl</td>
     <td>arm64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-musl-arm64.tgz">pdfium-linux-musl-arm64.tgz</a></td>
-    <td>failing (#192)</td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-musl-arm64-static.tgz">pdfium-linux-musl-arm64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-musl-x64.tgz">pdfium-linux-musl-x64.tgz</a></td>
-    <td>failing (#191)</td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-musl-x64-static.tgz">pdfium-linux-musl-x64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x86</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-linux-musl-x86.tgz">pdfium-linux-musl-x86.tgz</a></td>
-    <td>failing (#193)</td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-linux-musl-x86-static.tgz">pdfium-linux-musl-x86-static.tgz</a></td>
   </tr>
 
   <tr>
-    <td rowspan="3" colspan="2">macOS</td>
+    <td rowspan="2" colspan="2">macOS</td>
     <td>arm64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-mac-arm64.tgz">pdfium-mac-arm64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-mac-arm64.tgz">pdfium-v8-mac-arm64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-mac-arm64-static.tgz">pdfium-mac-arm64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-mac-x64.tgz">pdfium-mac-x64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-mac-x64.tgz">pdfium-v8-mac-x64.tgz</a></td>
-  </tr>
-  <tr>
-    <td>univ</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-mac-univ.tgz">pdfium-mac-univ.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-mac-univ.tgz">pdfium-v8-mac-univ.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-mac-x64-static.tgz">pdfium-mac-x64-static.tgz</a></td>
   </tr>
 
   <tr>
     <td rowspan="3" colspan="2">Windows</td>
     <td>arm64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-arm64.tgz">pdfium-win-arm64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-win-arm64.tgz">pdfium-v8-win-arm64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-win-arm64-static.tgz">pdfium-win-arm64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x64</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x64.tgz">pdfium-win-x64.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-win-x64.tgz">pdfium-v8-win-x64.tgz</a></td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-win-x64-static.tgz">pdfium-win-x64-static.tgz</a></td>
   </tr>
   <tr>
     <td>x86</td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-win-x86.tgz">pdfium-win-x86.tgz</a></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-v8-win-x86.tgz">pdfium-v8-win-x86.tgz</a></td>
-  </tr>
-
-  <tr>
-    <td colspan="3">WebAssembly<sup>1</sup></td>
-    <td><a href="https://github.com/bblanchon/pdfium-binaries/releases/latest/download/pdfium-wasm.tgz">pdfium-wasm.tgz</a></td>
-    <td>not supported</td>
+    <td><a href="https://github.com/kognitos/pdfium-static/releases/latest/download/pdfium-win-x86-static.tgz">pdfium-win-x86-static.tgz</a></td>
   </tr>
 </table>
 
-<small>1: WebAssembly build is experimental; please [provide feedback](https://github.com/bblanchon/pdfium-binaries/issues/28).</small>
+See the [Releases page](https://github.com/kognitos/pdfium-static/releases) to download older versions of PDFium.
 
-See the [Releases page](https://github.com/bblanchon/pdfium-binaries/releases) to download older versions of PDFium.
-
-### NuGet Packages
-
-The following NuGet packages are available:
-
-<table>
-  <tr>
-    <th>OS</th>
-    <th>PDFium</th>
-    <th>PDFium V8</th>
-  </tr>
-
-  <tr>
-    <td>All (meta package)</td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFium/">bblanchon.PDFium</a></td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFiumV8/">bblanchon.PDFiumV8</a></td>
-  </tr>
-
-  <tr>
-    <td>Android</td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFium.Android/">bblanchon.PDFium.Android</a></td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFiumV8.Android/">bblanchon.PDFiumV8.Android</a></td>
-  </tr>
-
-  <tr>
-    <td>iOS</td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFium.iOS/">bblanchon.PDFium.iOS</a></td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFiumV8.iOS/">bblanchon.PDFiumV8.iOS</a></td>
-  </tr>
-
-  <tr>
-    <td>Linux</td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFium.Linux/">bblanchon.PDFium.Linux</a></td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFiumV8.Linux/">bblanchon.PDFiumV8.Linux</a></td>
-  </tr>
-
-  <tr>
-    <td>macOS</td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFium.macOS/">bblanchon.PDFium.macOS</a></td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFiumV8.macOS/">bblanchon.PDFiumV8.macOS</a></td>
-  </tr>
-
-  <tr>
-    <td>Windows</td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFium.Win32/">bblanchon.PDFium.Win32</a></td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFiumV8.Win32/">bblanchon.PDFiumV8.Win32</a></td>
-  </tr>
-
-  <tr>
-    <td>WebAssembly<sup>1</sup></td>
-    <td><a href="https://www.nuget.org/packages/bblanchon.PDFium.WebAssembly/">bblanchon.PDFium.WebAssembly</a></td>
-    <td>not supported</td>
-  </tr>
-</table>
-
-<small>1: WebAssembly build is experimental; please [provide feedback](https://github.com/bblanchon/pdfium-binaries/issues/28).</small>
-
-**HELP WANTED!**  
-I can provide packages for your favorite package manager, but I need help from someone who knows the format. Contact me via [GitHub issues](https://github.com/bblanchon/pdfium-binaries/issues) if you want to help.
+If you need a **shared-library** build (`.so` / `.dll` / `.dylib`), NuGet packages, Conda packages, V8-enabled builds, or WebAssembly, use the upstream project: [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries/).
 
 ## Documentation
 
 ### PDFium API documentation
 
-Please find the [documentation of the PDFium API on developers.foxit.com](https://developers.foxit.com/resources/pdf-sdk/c_api_reference_pdfium/index.html).
+The PDFium API is documented at [developers.foxit.com](https://developers.foxit.com/resources/pdf-sdk/c_api_reference_pdfium/index.html).
 
 ### How to use PDFium in a CMake project
 
@@ -252,12 +147,31 @@ Please find the [documentation of the PDFium API on developers.foxit.com](https:
 
         target_link_libraries(my_exe pdfium)
 
-5. On Windows, make sure that `pdfium.dll` can be found by your executable (copy it on the same folder, or put it on the `PATH`).
+The `pdfium` CMake target propagates everything consumers need:
 
+- the include directory,
+- the system libraries the static archive depends on:
+  - Linux: `pthread`, `dl`, `m`
+  - macOS: `CoreGraphics`, `CoreFoundation`, `CoreText`, `AppKit` frameworks
+  - Windows: `gdi32`, `user32`, `advapi32`, `comdlg32`, `shell32`
+- the `FPDF_STATIC` compile definition (required on Windows so that `FPDF_EXPORT` resolves to an empty macro rather than `__declspec(dllimport)`). You do **not** need to define `FPDF_STATIC` yourself as long as you link via `find_package(PDFium)`.
+
+### Using PDFium without CMake
+
+If you can't use `find_package`, on Windows you must define `FPDF_STATIC` for every translation unit that includes PDFium headers (otherwise the compiler will emit `__declspec(dllimport)` on every `FPDF_*` function, leading to unresolved `__imp_*` symbols at link time). On Linux/macOS/iOS/Android, no extra define is needed.
+
+## Relationship to upstream
+
+This fork tracks [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries/) and follows the same weekly build cadence against upstream PDFium's `chromium/*` branches. The only meaningful divergences are:
+
+- CI produces static archives instead of shared libraries.
+- Release tarballs are suffixed with `-static`.
+- V8, NuGet, Conda, macOS universal, and WebAssembly targets are not built (use upstream for those).
+- A minor patch to `public/fpdfview.h` guards the Windows dllimport/dllexport block with `FPDF_STATIC` so the same headers work for static consumers.
 
 ## Related projects
 
-The following projects use (or recommend using) our PDFium builds:
+The following projects use (or recommend using) PDFium builds from the upstream project — several of them work just as well with the static tarballs published here:
 
 | Name                           | Language | Description                                                                             |
 | :----------------------------- | :------- | :-------------------------------------------------------------------------------------- |
@@ -279,57 +193,9 @@ The following projects use (or recommend using) our PDFium builds:
 | [Spacedrive][spacedrive]       | Rust/TS  | Cross-platform file manager, powered by a virtual distributed filesystem                |
 | [wxPDFView][wxpdfview]         | C++      | wxWidgets components to display PDF content                                             |
 
-*Did we miss a project? Please open a PR!*  
+## Credits
 
-
-## Contributors
-
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th>Username</th>
-      <th>Contributions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><img src="https://github.com/bblanchon.png" width="48" height="48" alt="Benoit Blanchon"></td>
-      <td><a href="https://github.com/bblanchon"><code>@bblanchon</code></a></td>
-      <td>Main contributor</td>
-    </tr>
-    <tr>
-      <td><img src="https://github.com/ChristofferGreen.png" width="48" height="48" alt="Christoffer Green"></td>
-      <td><a href="https://github.com/ChristofferGreen"><code>@ChristofferGreen</code></a></td>
-      <td>Linux ARM build</td>
-    </tr>
-    <tr>
-      <td><img src="https://github.com/jerbob92.png" width="48" height="48" alt="Jeroen Bobbeldijk"></td>
-      <td><a href="https://github.com/jerbob92"><code>@jerbob92</code></a></td>
-      <td>Musl and WebAssembly builds</td>
-    </tr>
-    <tr>
-      <td><img src="https://github.com/mara004.png" width="48" height="48" alt="mara004"></td>
-      <td><a href="https://github.com/mara004"><code>@mara004</code></a></td>
-      <td>Conda packages. ppc64 build. Constant aid.</td>
-    </tr>
-    <tr>
-      <td><img src="https://github.com/mgiessing.png" width="48" height="48" alt="Marvin Gießing"></td>
-      <td><a href="https://github.com/mgiessing"><code>@mgiessing</code></a></td>
-      <td>ppc64 build</td>
-    </tr>
-    <tr>
-      <td><img src="https://github.com/sungaila.png" width="48" height="48" alt="David Sungaila"></td>
-      <td><a href="https://github.com/sungaila"><code>@sungaila</code></a></td>
-      <td>NuGet packages</td>
-    </tr>
-    <tr>
-      <td><img src="https://github.com/TcT2k.png" width="48" height="48" alt="Tobias Taschner"></td>
-      <td><a href="https://github.com/TcT2k"><code>@TcT2k</code></a></td>
-      <td>macOS and V8 builds</td>
-    </tr>
-  </tbody>
-</table
+The build infrastructure here is the work of [@bblanchon](https://github.com/bblanchon) and the upstream [pdfium-binaries contributors](https://github.com/bblanchon/pdfium-binaries/graphs/contributors). This fork only adapts it for static-library output. Please file upstream issues and PRs at [bblanchon/pdfium-binaries](https://github.com/bblanchon/pdfium-binaries/) unless they are specific to the static build path.
 
 [dart_pdf]: https://github.com/DavBfr/dart_pdf
 [dtronixpdf]: https://github.com/Dtronix/DtronixPdf

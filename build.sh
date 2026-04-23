@@ -29,7 +29,7 @@ Options:
   exit
 fi
 
-while getopts "b:djmsg:" OPTION
+while getopts "b:djsg:" OPTION
 do
   case $OPTION in
     b)

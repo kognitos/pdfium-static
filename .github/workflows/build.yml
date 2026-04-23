@@ -41,6 +41,11 @@ on:
         type: string
         required: false
         default: 3.1.72
+      build_type:
+        description: Build type (static|shared)
+        type: string
+        required: false
+        default: static
     outputs:
       artifact:
         description: "The name of the artifact"
@@ -63,6 +68,7 @@ jobs:
       PDFium_TARGET_ENVIRONMENT: ${{ inputs.target_environment }}
       PDFium_ENABLE_V8: ${{ inputs.enable_v8 }}
       PDFium_VERSION: ${{ inputs.version }}
+      PDFium_BUILD_TYPE: ${{ inputs.build_type }}
       EMSDK_VERSION: ${{ inputs.emsdk_version }}
       MUSL_URL: ${{ secrets.MUSL_URL }}
     steps:
@@ -75,6 +81,7 @@ jobs:
           [ "$PDFium_TARGET_OS" != "emscripten" ] && ARTIFACT="$ARTIFACT-$PDFium_TARGET_OS"
           [ "$PDFium_TARGET_ENVIRONMENT" != "" ] && ARTIFACT="$ARTIFACT-$PDFium_TARGET_ENVIRONMENT"
           ARTIFACT="$ARTIFACT-$PDFium_TARGET_CPU"
+          [ "$PDFium_BUILD_TYPE" == "static" ] && ARTIFACT="$ARTIFACT-static"
           [ "${{inputs.is_debug}}" == "true" ] && ARTIFACT="$ARTIFACT-debug"
           echo "artifact=$ARTIFACT" >> $GITHUB_OUTPUT
       - name: Checkout this repo
